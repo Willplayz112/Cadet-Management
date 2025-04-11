@@ -1,0 +1,1 @@
+powershell -ExecutionPolicy Bypass -File "C:\Path\To\logoff-confirm.ps1"
