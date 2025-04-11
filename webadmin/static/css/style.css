@@ -1,0 +1,139 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.logout-button {
+    background: #ff4d4d;
+    color: #fff;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background: #e60000;
+}
+
+.user-form input {
+    margin: 5px 0;
+    padding: 10px;
+    width: calc(100% - 22px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.user-form button {
+    background: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.user-form button:hover {
+    background: #45a049;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+}
+
+.user-list li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-link {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.delete-link:hover {
+    text-decoration: underline;
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-form input {
+    margin: 10px 0;
+    padding: 10px;
+    width: calc(100% - 22px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-form button {
+    background: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-form button:hover {
+    background: #45a049;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.messages li {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.messages .success {
+    background: #d4edda;
+    color: #155724;
+}
+
+.messages .danger {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.messages .info {
+    background: #d1ecf1;
+    color: #0c5460;
+}
