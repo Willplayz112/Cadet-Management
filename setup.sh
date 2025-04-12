@@ -2,19 +2,23 @@
 
 # Update and install dependencies
 sudo apt update
-sudo apt install -y python3 python3-pip samba krb5-config winbind libnss-winbind libpam-winbind
+sudo apt install -y samba samba-common-bin krb5-config krb5-user winbind libpam-winbind libnss-winbind
 
-# Install Python packages
-pip3 install -r requirements.txt
+# Provision Samba as AD DC
+sudo samba-tool domain provision --use-rfc2307 --realm=CADET.LOCAL --domain=CADET --server-role=dc --dns-backend=SAMBA_INTERNAL --adminpass='StrongPassword123!'
 
-# Setup Samba if not already configured
-if [ ! -f /etc/samba/smb.conf.bak ]; then
-    sudo cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
-    sudo cp samba/smb.conf /etc/samba/smb.conf
-fi
+# Configure Kerberos
+cat <<EOF | sudo tee /etc/krb5.conf
+[libdefaults]
+    default_realm = CADET.LOCAL
+    dns_lookup_realm = false
+    dns_lookup_kdc = true
+EOF
 
-# Set executable permissions for GPO scripts
-chmod +x gpo-scripts/*.bat
-chmod +x gpo-scripts/*.ps1
+# Start Samba AD DC service
+sudo systemctl stop smbd nmbd winbind
+sudo systemctl disable smbd nmbd winbind
+sudo systemctl enable samba-ad-dc
+sudo systemctl start samba-ad-dc
 
-echo "Setup complete. Run 'python3 webadmin/app.py' to start the web interface."
+echo "Samba AD DC setup complete. Join Windows clients to the domain CADET.LOCAL"

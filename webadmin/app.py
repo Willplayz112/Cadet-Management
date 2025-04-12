@@ -8,8 +8,6 @@ import pam
 app = Flask(__name__)
 app.secret_key = 'cadet-secret'
 
-# Simulated admin credentials (replace with a secure method in production)
-
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -54,7 +52,10 @@ def logout():
 @login_required
 def index():
     users = subprocess.getoutput("sudo pdbedit -L").splitlines()
-    return render_template('index.html', users=users)
+    # Exclude system accounts
+    excluded_accounts = ["UBUNTU-ADDC$", "Administrator", "krbtgt", "nobody"]
+    filtered_users = [user for user in users if not any(excluded in user for excluded in excluded_accounts)]
+    return render_template('index.html', users=filtered_users)
 
 @app.route('/add', methods=['POST'])
 @login_required
@@ -99,11 +100,17 @@ def add_user():
 @login_required
 def delete_user(username):
     try:
+        # Remove the user from Samba
         process = subprocess.run(["sudo", "smbpasswd", "-x", username], capture_output=True, text=True)
         if process.returncode == 0:
-            flash(f'User {username} deleted.', 'warning')
+            # Remove the user from the Linux system
+            userdel_process = subprocess.run(["sudo", "userdel", "-r", username], capture_output=True, text=True)
+            if userdel_process.returncode == 0:
+                flash(f'User {username} deleted from both Samba and Linux.', 'warning')
+            else:
+                flash(f'Failed to delete Linux user {username}: {userdel_process.stderr}', 'danger')
         else:
-            flash(f'Failed to delete user {username}: {process.stderr}', 'danger')
+            flash(f'Failed to delete Samba user {username}: {process.stderr}', 'danger')
     except Exception as e:
         flash(f'Error: {str(e)}', 'danger')
     return redirect(url_for('index'))
