@@ -72,7 +72,7 @@ The system will be available at http://localhost:5000 by default.
 
 [ ] Reports & Analytics
 
-[ ] User Authentication and Permissions
+[x] User Authentication and Permissions
 
 
 # Contributing
